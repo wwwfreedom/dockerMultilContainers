@@ -3,20 +3,20 @@ services:
   - docker
   # build test image
 before_install:
-  - docker build -t kevin/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t wwwfreedom/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run kevin/react-test npm test -- --coverage
+  - docker run wwwfreedom/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t kevin/multila-client ./client
-  - docker build -t kevin/multila-nginx ./nginx
-  - docker build -t kevin/multila-server ./server
-  - docker build -t kevin/multila-worker ./worker
+  - docker build -t wwwfreedom/multila-client ./client
+  - docker build -t wwwfreedom/multila-nginx ./nginx
+  - docker build -t wwwfreedom/multila-server ./server
+  - docker build -t wwwfreedom/multila-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push kevin/multila-client
-  - docker push kevin/multila-nginx
-  - docker push kevin/multila-server
-  - docker push kevin/multila-worker
+  - docker push wwwfreedom/multila-client
+  - docker push wwwfreedom/multila-nginx
+  - docker push wwwfreedom/multila-server
+  - docker push wwwfreedom/multila-worker
