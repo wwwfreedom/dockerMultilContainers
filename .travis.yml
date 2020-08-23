@@ -1,13 +1,25 @@
 sudo: required
+services:
+  - docker
+  # build test image
+before_install:
+  - docker build -t wwwfreedom/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run wwwfreedom/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t wwwfreedom/multila-client ./client
 
 deploy:
   provider: elasticbeanstalk
-  region: ap-southeast-2
+  region: us-west-1
   app: multi-docker
   env: MultiDocker-env
-  bucket_name: elasticbeanstalk-ap-southeast-2-286246934562
+  bucket_name: elasticbeanstalk-us-west-1-306476627547
   bucket_path: docker-multi
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
