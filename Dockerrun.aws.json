@@ -23,13 +23,6 @@
       "memory": 128
     },
     {
-      "name": "strapi",
-      "image": "strapi/strapi",
-      "hostname": "strapi",
-      "essential": false,
-      "memory": 256
-    },
-    {
       "name": "nginx",
       "image": "wwwfreedom/multila-nginx",
       "hostname": "nginx",
