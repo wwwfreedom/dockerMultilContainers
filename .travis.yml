@@ -1,4 +1,26 @@
 sudo: required
+services:
+  - docker
+  # build test image
+before_install:
+  - docker build -t wwwfreedom/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run wwwfreedom/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t wwwfreedom/multila-client ./client
+  - docker build -t wwwfreedom/multila-nginx ./nginx
+  - docker build -t wwwfreedom/multila-server ./server
+  - docker build -t wwwfreedom/multila-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push wwwfreedom/multila-client
+  - docker push wwwfreedom/multila-nginx
+  - docker push wwwfreedom/multila-server
+  - docker push wwwfreedom/multila-worker
+
 deploy:
   provider: elasticbeanstalk
   region: us-west-1
